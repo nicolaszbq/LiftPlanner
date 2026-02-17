@@ -25,6 +25,12 @@ public class Worksheet {
     @OneToMany(mappedBy = "worksheet", cascade = CascadeType.ALL)
     private List<Division> divisions = new ArrayList<>();
 
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "worksheet")
+    private List<WorksheetAssignment> assignments = new ArrayList<>();
+
+
     public Worksheet(String id, String name){
         this.id = id;
         this.name = name;
@@ -38,6 +44,16 @@ public class Worksheet {
     public void removeDivision(Division d){
         divisions.remove(d);
         d.setWorksheet(null);
+    }
+
+    public void addAssignment(WorksheetAssignment wa){
+        assignments.add(wa);
+        wa.setWorksheet(this);
+    }
+
+    public void removeAssignment(WorksheetAssignment wa){
+        assignments.remove(wa);
+        wa.setWorksheet(null);
     }
 
 }
