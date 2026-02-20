@@ -21,7 +21,7 @@ public class WorksheetController {
     }
 
     @PostMapping("/addWorksheet")
-    public void addWorksheet(Worksheet w){
+    public void addWorksheet(@RequestBody Worksheet w){
         worksheetService.addWorksheet(w);
     }
 

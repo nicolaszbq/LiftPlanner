@@ -40,11 +40,11 @@ public class WorksheetAssignment {
     @JoinColumn(name = "worksheet_id")
     private Worksheet worksheet;
 
-    public WorksheetAssignment(String id, Date assignedAt, Date validUntil, Status status, UserTrainer assignedBy, String observations, UserMember member, Worksheet worksheet) {
+    public WorksheetAssignment(String id,  Date validUntil, UserTrainer assignedBy, String observations, UserMember member, Worksheet worksheet) {
         this.id = id;
-        this.assignedAt = assignedAt;
+        this.assignedAt = new Date();
         this.validUntil = validUntil;
-        this.status = status;
+        this.status = Status.ACTIVE;
         this.assignedBy = assignedBy;
         this.observations = observations;
         this.member = member;

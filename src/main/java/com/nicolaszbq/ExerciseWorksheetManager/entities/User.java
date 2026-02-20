@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "db_users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -29,9 +30,7 @@ public abstract class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    public User(){
 
-    }
 
     public User(String id, String username, String email, String password, Role role) {
         this.id = id;

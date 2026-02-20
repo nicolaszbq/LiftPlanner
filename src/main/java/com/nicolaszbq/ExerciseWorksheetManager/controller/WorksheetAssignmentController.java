@@ -1,6 +1,8 @@
 package com.nicolaszbq.ExerciseWorksheetManager.controller;
 
 
+import com.nicolaszbq.ExerciseWorksheetManager.dto.request.WorksheetAssignmentRequestDTO;
+import com.nicolaszbq.ExerciseWorksheetManager.dto.response.WorksheetAssignmentResponseDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.WorksheetAssignment;
 import com.nicolaszbq.ExerciseWorksheetManager.service.WorksheetAssignmentsService;
 import com.nicolaszbq.ExerciseWorksheetManager.service.WorksheetService;
@@ -16,10 +18,11 @@ public class WorksheetAssignmentController {
 
     @Autowired
     private WorksheetAssignmentsService worksheetAssignmentsService;
+
+
     @GetMapping("/findAllAssignments")
-    public List<WorksheetAssignment> findAllAssignments(){
-        List<WorksheetAssignment> was = worksheetAssignmentsService.findAllAssignments();
-        return was;
+    public List<WorksheetAssignmentResponseDTO> findAllAssignments(){
+        return worksheetAssignmentsService.findAllAssignments();
     }
 
     @GetMapping("/findAssignment/{id}")
@@ -31,5 +34,12 @@ public class WorksheetAssignmentController {
     @DeleteMapping("/deleteAssignment/{id}")
     public void deleteAssignmentById(@PathVariable String id){
         worksheetAssignmentsService.deleteAssignmentById(id);
+    }
+
+    @PostMapping
+    public WorksheetAssignmentResponseDTO create(
+            @RequestBody WorksheetAssignmentRequestDTO dto
+    ) {
+        return worksheetAssignmentsService.create(dto);
     }
 }
