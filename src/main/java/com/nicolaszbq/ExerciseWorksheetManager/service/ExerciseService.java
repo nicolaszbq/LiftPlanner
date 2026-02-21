@@ -1,5 +1,9 @@
 package com.nicolaszbq.ExerciseWorksheetManager.service;
 
+import com.nicolaszbq.ExerciseWorksheetManager.dto.mapper.ExerciseMapperDTO;
+import com.nicolaszbq.ExerciseWorksheetManager.dto.request.ExerciseRequestDTO;
+import com.nicolaszbq.ExerciseWorksheetManager.dto.request.UserRequestDTO;
+import com.nicolaszbq.ExerciseWorksheetManager.dto.response.ExerciseResponseDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.Exercise;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.Exercise;
 import com.nicolaszbq.ExerciseWorksheetManager.repository.ExerciseRepository;
@@ -14,18 +18,41 @@ public class ExerciseService {
     @Autowired
     private ExerciseRepository exerciseRepository;
 
-    public List<Exercise> getAllExercises(){
-        List<Exercise> ds = exerciseRepository.findAll();
-        return ds;
+    @Autowired
+    private ExerciseMapperDTO mapper;
+
+    public List<ExerciseResponseDTO> getAllExercises(){
+        return exerciseRepository.findAll()
+                .stream()
+                .map(mapper)
+                .toList();
     }
 
-    public void addExercise(Exercise Exercise){
-        exerciseRepository.save(Exercise);
+
+    public Optional<ExerciseResponseDTO> getExerciseById(String id){
+        return exerciseRepository.findById(id)
+                .map(mapper);
     }
 
-    public Optional<Exercise> getExerciseById(String id){
-        Optional<Exercise> d = exerciseRepository.findById(id);
-        return d;
+
+    public ExerciseResponseDTO create(ExerciseRequestDTO dto){
+        Exercise entity = mapper.toEntity(dto);
+        Exercise saved = exerciseRepository.save(entity);
+        return mapper.apply(saved);
+
+    }
+
+
+    public ExerciseResponseDTO update(String id, ExerciseRequestDTO dto){
+        Exercise exercise = exerciseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Exercise not found"));
+        exercise.setName(dto.getName());
+        exercise.setVideoUrl(dto.getVideoUrl());
+        exercise.setSeries(dto.getSeries());
+        exercise.setDescription(dto.getDescription());
+        exercise.setReps(dto.getReps());
+        Exercise saved = exerciseRepository.save(exercise);
+        return mapper.apply(saved);
     }
 
     public void deleteExerciseById(String id){

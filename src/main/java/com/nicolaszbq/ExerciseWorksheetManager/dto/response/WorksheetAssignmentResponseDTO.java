@@ -13,16 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 public class WorksheetAssignmentResponseDTO {
-    /*
-    this.id = id;
-        this.assignedAt = new Date();
-        this.validUntil = validUntil;
-        this.status = Status.ACTIVE;
-        this.assignedBy = assignedBy;
-        this.observations = observations;
-        this.member = member;
-        this.worksheet = worksheet;
-     */
+
     private String id;
     private String trainerName;
     private String memberName;

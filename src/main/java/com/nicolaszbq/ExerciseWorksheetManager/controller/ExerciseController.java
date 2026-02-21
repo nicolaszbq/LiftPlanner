@@ -1,5 +1,7 @@
 package com.nicolaszbq.ExerciseWorksheetManager.controller;
 
+import com.nicolaszbq.ExerciseWorksheetManager.dto.request.ExerciseRequestDTO;
+import com.nicolaszbq.ExerciseWorksheetManager.dto.response.ExerciseResponseDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.Exercise;
 import com.nicolaszbq.ExerciseWorksheetManager.service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +18,30 @@ public class ExerciseController {
     private ExerciseService exerciseService;
 
     @GetMapping("/getAllExercises")
-    public List<Exercise> getAllExercises(){
-        List<Exercise> ds = exerciseService.getAllExercises();
+    public List<ExerciseResponseDTO> getAllExercises(){
+        List<ExerciseResponseDTO> ds = exerciseService.getAllExercises();
         return ds;
     }
 
-    @PostMapping("/addExercise")
-    public void addExercise(Exercise Exercise){
-        exerciseService.addExercise(Exercise);
-    }
-
     @GetMapping("/getExercise/{id}")
-    public Optional<Exercise> getExerciseById(@PathVariable String id){
-        Optional<Exercise> d = exerciseService.getExerciseById(id);
+    public Optional<ExerciseResponseDTO> getExerciseById(@PathVariable String id){
+        Optional<ExerciseResponseDTO> d = exerciseService.getExerciseById(id);
         return d;
     }
 
     @DeleteMapping("/deleteExercise/{id}")
     public void deleteExerciseById(@PathVariable String id){
         exerciseService.deleteExerciseById(id);
+    }
+
+    @PostMapping("/createExercise")
+    public ExerciseResponseDTO create(@RequestBody ExerciseRequestDTO dto){
+        return exerciseService.create(dto);
+    }
+
+
+    @PostMapping("/updateExercise/{id}")
+    public void update(@PathVariable String id, ExerciseRequestDTO dto){
+        exerciseService.update(id,dto);
     }
 }

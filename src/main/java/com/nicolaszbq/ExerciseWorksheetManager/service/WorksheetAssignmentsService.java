@@ -51,27 +51,17 @@ public class WorksheetAssignmentsService {
     }
 
     public WorksheetAssignmentResponseDTO create(WorksheetAssignmentRequestDTO dto) {
-
-        //Buscar Trainer
         UserTrainer trainer = (UserTrainer) userRepository.findById(dto.getTrainerId())
                 .orElseThrow(() -> new RuntimeException("Trainer not found"));
 
-        //Buscar Member
         UserMember member = (UserMember) userRepository.findById(dto.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found"));
-
-        //Buscar Worksheet
         Worksheet worksheet = worksheetRepository.findById(dto.getWorksheetId())
                 .orElseThrow(() -> new RuntimeException("Worksheet not found"));
-
-        //Converter DTO → Entity
         WorksheetAssignment entity =
                 mapper.toEntity(dto, trainer, member, worksheet);
 
-        //Salvar no banco
         worksheetAssignmentRepository.save(entity);
-
-        // Converter Entity → ResponseDTO
         return mapper.apply(entity);
     }
 }
