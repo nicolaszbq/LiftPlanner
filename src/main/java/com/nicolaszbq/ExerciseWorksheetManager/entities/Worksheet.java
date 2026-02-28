@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Worksheet {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String name;
@@ -25,6 +25,13 @@ public class Worksheet {
     @OneToMany(mappedBy = "worksheet", cascade = CascadeType.ALL)
     private List<Division> divisions = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name="trainer_id")
+    private User trainer;
 
     @JsonIgnore
     @OneToMany(mappedBy = "worksheet")

@@ -2,9 +2,11 @@ package com.nicolaszbq.ExerciseWorksheetManager.entities;
 
 import com.nicolaszbq.ExerciseWorksheetManager.enums.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @NoArgsConstructor
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @DiscriminatorColumn(name="user_type")
 @Getter
 @Setter
+@SuperBuilder
 public abstract class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

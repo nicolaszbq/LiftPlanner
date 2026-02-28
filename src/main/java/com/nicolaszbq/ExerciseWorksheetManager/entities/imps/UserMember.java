@@ -5,7 +5,9 @@ import com.nicolaszbq.ExerciseWorksheetManager.entities.User;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.WorksheetAssignment;
 import com.nicolaszbq.ExerciseWorksheetManager.enums.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("MEMBER")
 @NoArgsConstructor
+@SuperBuilder
 public class UserMember extends User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -36,7 +39,7 @@ public class UserMember extends User {
         super(id,username,email,password,Role.MEMBER);
     }
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<WorksheetAssignment> assignments = new ArrayList<>();
 
     public void addAssignment(WorksheetAssignment wa){

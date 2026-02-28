@@ -34,8 +34,8 @@ public class WorksheetController {
     }
 
     @PostMapping("/createWorksheet")
-    public WorksheetResponseDTO createWorksheet(@RequestBody WorksheetRequestDTO dto){
-        return worksheetService.create(dto);
+    public void createWorksheet(@RequestBody WorksheetRequestDTO dto){
+        worksheetService.createWorksheet(dto);
     }
 
     @PostMapping("/addDivision/{divisionId}/{worksheetId}")
