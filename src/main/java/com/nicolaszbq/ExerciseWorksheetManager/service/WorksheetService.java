@@ -53,7 +53,7 @@ public class WorksheetService {
         worksheetRepository.deleteById(id);
     }
 
-    public void createWorksheet(WorksheetRequestDTO dto) {
+    public WorksheetResponseDTO createWorksheet(WorksheetRequestDTO dto) {
         System.out.println("Chegou no service");
         Worksheet worksheet = new Worksheet();
         worksheet.setName(dto.getName());
@@ -94,6 +94,7 @@ public class WorksheetService {
         worksheet.setDivisions(divisions);
 
         worksheetRepository.save(worksheet);
+        return mapper.apply(worksheet);
 
     }
 

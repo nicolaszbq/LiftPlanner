@@ -220,7 +220,7 @@
     const user = JSON.parse(localStorage.getItem("user"))
     const worksheet = {
         name: name,
-        userId: "06a45414-4963-4ce0-9229-c5f7040bf04f",      // coloque o ID real depois
+        userId: user.id,      // coloque o ID real depois
         trainerId: user.id,   // coloque o ID real depois
         divisions: divisions
     };

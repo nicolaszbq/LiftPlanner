@@ -1,5 +1,7 @@
 package com.nicolaszbq.ExerciseWorksheetManager.repository;
 
+import com.nicolaszbq.ExerciseWorksheetManager.dto.request.WorksheetRequestDTO;
+import com.nicolaszbq.ExerciseWorksheetManager.dto.response.WorksheetResponseDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.Worksheet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
