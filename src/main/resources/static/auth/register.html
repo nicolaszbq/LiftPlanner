@@ -1,34 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register your account</title>
+    <title>LiftPlanner - Cadastro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/register.css">
 </head>
 <body>
     <div id="registerDiv">
+        <h2>💪 LiftPlanner</h2>
+        <p>Junte-se à comunidade!</p>
+        
         <form id="registerForm">
-            <input type="text" name="name" placeholder="Nome" required>
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="name" placeholder="Nome completo" required>
+            <input type="email" name="email" placeholder="E-mail" required>
             <input type="password" name="password" placeholder="Senha" required>
 
             <div class="role-selection">
-                <p>Tipo de conta</p>
+                <p>👤 Tipo de conta</p>
                 <label>
                     <input type="radio" name="role" value="MEMBER" required>
-                    Membro
+                    <span>Membro (Treino)</span>
                 </label>
 
                 <label>
                     <input type="radio" name="role" value="TRAINER">
-                    Treinador
+                    <span>Treinador (Criar Treinos)</span>
                 </label>
             </div>
-            <button type="submit">Cadastrar</button>
+            <button type="submit">Criar Conta</button>
         </form>
+        
+        <a href="login.html">Já tem conta? Faça login 🔐</a>
     </div>
-    <script  src="../js/register.js"></script>
+    
+    <script src="../js/register.js"></script>
 </body>
-
 </html>

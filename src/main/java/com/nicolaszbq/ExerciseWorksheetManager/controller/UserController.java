@@ -25,17 +25,20 @@ public class UserController {
     @Autowired
     private UserMapperDTO mapper;
 
-
     @GetMapping("/findAll")
     public List<UserResponseDTO> findAll(){
         return userService.findAll();
+    }
+
+    @GetMapping("/getMembers")
+    public List<UserResponseDTO> getMembers(@RequestParam(required=false) String q){
+        return userService.findMembers(q);
     }
 
     @PostMapping("/createUser")
     public void create(@RequestBody UserRequestDTO dto){
         userService.create(dto);
     }
-
 
     @GetMapping("/findById/{id}")
     public Optional<UserResponseDTO> findUserById(@PathVariable String id){

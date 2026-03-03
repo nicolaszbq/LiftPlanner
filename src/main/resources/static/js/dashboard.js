@@ -1,14 +1,80 @@
     const content = document.getElementById("contentArea");
 
-    getWorksheets();
+    let selectedMember = null;
 
+    // debounce: evita chamar a API a cada tecla
+    function debounce(fn, wait){
+        let t;
+        return function(...args){
+            clearTimeout(t);
+            t = setTimeout(() => fn.apply(this, args), wait);
+        }
+    }
+
+    // busca membros no backend e renderiza o resultado
+    async function searchMembers(query){
+        const container = document.getElementById("memberResults");
+        if(!container) return;
+        if(!query || query.trim().length === 0){
+            container.innerHTML = "";
+            selectedMember = null;
+            return;
+        }
+
+        try{
+            const res = await fetch(`/users/members?q=${encodeURIComponent(query)}`);
+            if(!res.ok) return;
+            const list = await res.json();
+            showMemberResults(list);
+        }catch(err){
+            console.error("Erro ao buscar membros:", err);
+        }
+    }
+
+    function showMemberResults(list) {
+        const container = document.getElementById("memberResults");
+        if(!container) return;
+        container.innerHTML = "";
+        if(!list || list.length === 0){
+            container.innerHTML = `<div class=\"result-empty\">Nenhum aluno encontrado</div>`;
+            return;
+        }
+        list.forEach(u => {
+            const div = document.createElement("div");
+            div.className = "result-item";
+            div.textContent = u.username + (u.email ? ` — ${u.email}` : "");
+            div.dataset.id = u.id;
+            div.addEventListener("click", () => {
+                selectedMember = u;
+                const searchEl = document.getElementById("memberSearch");
+                if(searchEl) searchEl.value = u.username;
+                container.innerHTML = "";
+            });
+            container.appendChild(div);
+        });
+    }
+
+    getWorksheets();
     let worksheets = [];
 
     document.getElementById("btnView")
-        .addEventListener("click", renderWorksheetList);
+        .addEventListener("click", function(){
+            updateActiveButton(this);
+            renderWorksheetList();
+        });
 
     document.getElementById("btnCreate")
-        .addEventListener("click", renderCreateBuilder);
+        .addEventListener("click", function(){
+            updateActiveButton(this);
+            renderCreateBuilder();
+        });
+
+    function updateActiveButton(button) {
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+        button.classList.add("active");
+    }
 
         
     renderWorksheetList();
@@ -69,10 +135,12 @@
             const exerciseList = await response.json();
         }catch(error){console.log("Erro ao salvar Exercicio: ", error)}
     }
-
+    
     async function getWorksheets() {
+        const user = JSON.parse(localStorage.getItem("user"))
+        trainerId = user.id;
         try{
-            const response = await fetch("http://localhost:8080/worksheets/findAllWorksheets");
+            const response = await fetch(`http://localhost:8080/worksheets/findByTrainerId/${trainerId}`);
 
             if(!response){
                 alert("Erro ao fazer a requisição")
@@ -100,6 +168,8 @@
             <button id="addDivision">Adicionar Divisão</button>
             <button id="saveWorksheet">Salvar Ficha</button>
             <button id="cancel">Cancelar</button>
+            <input type="text" id="memberSearch" placeholder="Buscar aluno por nome">
+            <div id="memberResults" class="autocomplete-results"></div>
         `;
 
         document.getElementById("addDivision")
@@ -110,6 +180,17 @@
 
         document.getElementById("cancel")
             .addEventListener("click", renderWorksheetList);
+
+        // conecta o input de busca de membro com debounce
+        const memberSearchEl = document.getElementById("memberSearch");
+        if(memberSearchEl){
+            const handler = debounce((e) => {
+                searchMembers(e.target.value);
+            }, 300);
+            memberSearchEl.addEventListener("input", handler);
+            // limpar seleção ao focar/editar
+            memberSearchEl.addEventListener("focus", () => { if(!memberSearchEl.value) selectedMember = null; });
+        }
     }
 
 
@@ -177,6 +258,11 @@
         }catch(error){console.log("Erro ao salvar o exercicio ", error)}
     }
 
+    async function logout(){
+        localStorage.removeItem("user");
+        window.location.href = "index.html";
+    }
+
     async function saveWorksheet() {
 
     const name = document.getElementById("worksheetName").value;
@@ -218,10 +304,29 @@
     });
 
     const user = JSON.parse(localStorage.getItem("user"))
+    // se o usuário digitou um nome no input mas não clicou no resultado,
+    // tentamos resolver esse texto para um usuário antes de salvar
+    const memberSearchEl = document.getElementById("memberSearch");
+    if(!selectedMember && memberSearchEl && memberSearchEl.value && memberSearchEl.value.trim().length>0){
+        try{
+            const q = encodeURIComponent(memberSearchEl.value.trim());
+            const resp = await fetch(`/users/members?q=${q}`);
+            if(resp && resp.ok){
+                const list = await resp.json();
+                if(list && list.length>0){
+                    selectedMember = list[0];
+                }
+            }
+        }catch(e){
+            console.warn('Busca rápida de membro falhou:', e);
+        }
+    }
+
     const worksheet = {
         name: name,
-        userId: user.id,      // coloque o ID real depois
-        trainerId: user.id,   // coloque o ID real depois
+        // se houver um aluno selecionado, salvamos esse id como owner (`userId`)
+        userId: selectedMember ? selectedMember.id : user.id,
+        trainerId: user.id,
         divisions: divisions
     };
 
@@ -250,3 +355,4 @@
         alert("Erro ao salvar no banco");
     }
 }
+

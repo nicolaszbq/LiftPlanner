@@ -2,23 +2,42 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Workout Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiftPlanner - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
 <div class="dashboard">
-
     <aside class="sidebar">
-        <h2>Workout Manager</h2>
-        <button id="btnView">Minhas Fichas</button>
-        <button id="btnCreate">Criar Ficha</button>
+        <div class="sidebar-header">
+            <div class="logo-icon">💪</div>
+            <h1>LiftPlanner</h1>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <button id="btnView" class="nav-btn active">
+                <span class="icon">📋</span>
+                <span>Minhas Fichas</span>
+            </button>
+            <button id="btnCreate" class="nav-btn">
+                <span class="icon">➕</span>
+                <span>Criar Ficha</span>
+            </button>
+
+            <button id="btnLogout" class="nav-btn" onclick="logout()">
+                <span class="icon">🚪</span>
+                <span>Sair</span>
+            </button>
+        </nav>
     </aside>
 
     <main class="content">
         <div id="contentArea"></div>
     </main>
-
 </div>
 
 <script src="js/dashboard.js"></script>

@@ -43,6 +43,14 @@ public class WorksheetService {
                 .toList();
     }
 
+    public List<WorksheetResponseDTO> findWorksheetsByTrainerId(String trainerId){
+        return worksheetRepository.getWorksheetByTrainerId(trainerId)
+                .stream()
+                .map(mapper)
+                .toList();
+    }
+
+    
 
     public Optional<WorksheetResponseDTO> findWorksheetById(String id){
         return worksheetRepository.findById(id)
@@ -109,6 +117,7 @@ public class WorksheetService {
     }
 
     public Worksheet saveWorksheet(Worksheet worksheet){
+        
         for(Division div : worksheet.getDivisions()){
             div.setWorksheet(worksheet);
             for (Exercise ex : div.getExercises()){

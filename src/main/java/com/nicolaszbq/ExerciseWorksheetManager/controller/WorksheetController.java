@@ -23,6 +23,11 @@ public class WorksheetController {
         return wos;
     }
 
+    @GetMapping("/findByTrainerId/{trainerId}")
+    public List<WorksheetResponseDTO> findWorksheetsByTrainerId(@PathVariable String trainerId){
+        return worksheetService.findWorksheetsByTrainerId(trainerId);
+    }
+    
     @GetMapping("/findById/{id}")
     public Optional<WorksheetResponseDTO> findWorksheetById(@PathVariable String id){
         return worksheetService.findWorksheetById(id);

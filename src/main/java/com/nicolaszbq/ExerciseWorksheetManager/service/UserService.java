@@ -4,6 +4,7 @@ import com.nicolaszbq.ExerciseWorksheetManager.dto.mapper.UserMapperDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.request.UserRequestDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.response.UserResponseDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.User;
+import com.nicolaszbq.ExerciseWorksheetManager.enums.Role;
 import com.nicolaszbq.ExerciseWorksheetManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,14 @@ public class UserService {
     public Optional<UserResponseDTO> findUserById(String id){
         return userRepository.findById(id)
                 .map(mapper);
+    }
+
+    public List<UserResponseDTO> findMembers(String query){
+        return userRepository
+        .findByRoleAndUsernameContaining(Role.MEMBER,query==null?"":query)
+        .stream()
+        .map(mapper)
+        .toList();
     }
 
     public UserResponseDTO update(String id, UserRequestDTO dto){
