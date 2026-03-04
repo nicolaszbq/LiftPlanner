@@ -37,7 +37,12 @@ public class UserService {
         return mapper.apply(savedUser);
     }
 
-
+    public String getIdByEmail(String email){
+        Optional<User> entity = userRepository.findByEmail(email);
+        String id = entity.get().getId();
+        return userRepository.findByEmail(email)
+                .map(User::getId).orElse(null);
+    }
 
     public void deleteById(String id){
         userRepository.deleteById(id);

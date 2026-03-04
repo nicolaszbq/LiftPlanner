@@ -22,7 +22,7 @@
         }
 
         try{
-            const res = await fetch(`/users/members?q=${encodeURIComponent(query)}`);
+            const res = await fetch(`/users/getMembers?q=${encodeURIComponent(query)}`);
             if(!res.ok) return;
             const list = await res.json();
             showMemberResults(list);
@@ -137,13 +137,23 @@
     }
     
     async function getWorksheets() {
-        const user = JSON.parse(localStorage.getItem("user"))
-        trainerId = user.id;
+        const userRaw = localStorage.getItem("user");
+        if(!userRaw){
+            console.warn("getWorksheets: no user in localStorage");
+            return;
+        }
+        const user = JSON.parse(userRaw);
+        const trainerId = user && user.id;
+        if(!trainerId){
+            console.warn("getWorksheets: trainerId not found on user");
+            return;
+        }
         try{
-            const response = await fetch(`http://localhost:8080/worksheets/findByTrainerId/${trainerId}`);
+            const response = await fetch(`/worksheets/findByTrainerId/${trainerId}`);
 
             if(!response){
                 alert("Erro ao fazer a requisição")
+                return;
             }
             const worksheetsList = await response.json();
             worksheetsList.forEach(w =>{
@@ -151,7 +161,29 @@
                 worksheets.push(w);
             })
         }catch(error){
-            console("Erro ao criar a requisição ", error)
+            console.error("Erro ao criar a requisição ", error);
+        }
+    }
+
+    async function getIdByEmail() {
+        const emailEl = document.getElementById("memberSearch");
+        const email = emailEl ? emailEl.value.trim() : "";
+        if(!email) return null;
+        try{
+            const response = await fetch(`/users/getId/${encodeURIComponent(email)}`);
+            if(!response || !response.ok){
+                console.warn("getIdByEmail: response not ok", response && response.status);
+                return null;
+            }
+            // backend returns a plain text id (string), so parse as text
+            const text = await response.text();
+            if(!text) return null;
+            const id = text.trim().replace(/^"|"$/g, "");
+            console.log("getIdByEmail -> id:", id);
+            return id;
+        }catch(error){
+            console.error("getIdByEmail error: ", error);
+            return null;
         }
     }
 
@@ -181,6 +213,8 @@
         document.getElementById("cancel")
             .addEventListener("click", renderWorksheetList);
 
+
+        
         // conecta o input de busca de membro com debounce
         const memberSearchEl = document.getElementById("memberSearch");
         if(memberSearchEl){
@@ -310,7 +344,7 @@
     if(!selectedMember && memberSearchEl && memberSearchEl.value && memberSearchEl.value.trim().length>0){
         try{
             const q = encodeURIComponent(memberSearchEl.value.trim());
-            const resp = await fetch(`/users/members?q=${q}`);
+            const resp = await fetch(`/users/getMembers?q=${q}`);
             if(resp && resp.ok){
                 const list = await resp.json();
                 if(list && list.length>0){
@@ -322,16 +356,20 @@
         }
     }
 
+    const userIdfr = selectedMember ? selectedMember.id : await getIdByEmail();
+    console.log("UserIdFr: ", userIdfr);
     const worksheet = {
         name: name,
         // se houver um aluno selecionado, salvamos esse id como owner (`userId`)
-        userId: selectedMember ? selectedMember.id : user.id,
+        userId: userIdfr,
         trainerId: user.id,
         divisions: divisions
     };
 
+    console.log("Sending worksheet:", JSON.stringify(worksheet));
+
     try {
-        const response = await fetch("http://localhost:8080/worksheets/createWorksheet", {
+        const response = await fetch("/worksheets/createWorksheet", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -340,7 +378,9 @@
         });
 
         if (!response.ok) {
-            throw new Error("Erro ao salvar ficha");
+            const text = await response.text().catch(() => null);
+            console.error("POST /worksheets/createWorksheet failed", response.status, text);
+            throw new Error(text || "Erro ao salvar ficha");
         }
 
         const data = await response.json();
@@ -352,7 +392,7 @@
 
     } catch (error) {
         console.error("Erro:", error);
-        alert("Erro ao salvar no banco");
+        alert("Erro ao salvar no banco: " + (error && error.message ? error.message : ""));
     }
 }
 
