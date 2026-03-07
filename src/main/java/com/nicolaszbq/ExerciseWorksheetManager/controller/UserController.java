@@ -35,6 +35,11 @@ public class UserController {
         return userService.findMembers(q);
     }
 
+    @GetMapping("/getId/{email}")
+    public String getIdByEmail(@PathVariable String email){
+        return userService.getIdByEmail(email);
+    }
+
     @PostMapping("/createUser")
     public void create(@RequestBody UserRequestDTO dto){
         userService.create(dto);
