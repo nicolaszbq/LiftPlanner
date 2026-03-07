@@ -27,6 +27,11 @@ public class WorksheetController {
     public List<WorksheetResponseDTO> findWorksheetsByTrainerId(@PathVariable String trainerId){
         return worksheetService.findWorksheetsByTrainerId(trainerId);
     }
+
+    @PostMapping("/update/{id}")
+    public WorksheetResponseDTO update(@PathVariable String id,@RequestBody WorksheetRequestDTO dto){
+        return worksheetService.update(id,dto);
+    }
     
     @GetMapping("/findById/{id}")
     public Optional<WorksheetResponseDTO> findWorksheetById(@PathVariable String id){

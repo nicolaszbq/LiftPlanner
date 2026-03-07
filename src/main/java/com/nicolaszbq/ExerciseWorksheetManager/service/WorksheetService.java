@@ -3,12 +3,10 @@ package com.nicolaszbq.ExerciseWorksheetManager.service;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.mapper.WorksheetMapperDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.request.DivisionRequestDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.request.ExerciseRequestDTO;
+import com.nicolaszbq.ExerciseWorksheetManager.dto.request.WorksheetAssignmentRequestDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.request.WorksheetRequestDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.response.WorksheetResponseDTO;
-import com.nicolaszbq.ExerciseWorksheetManager.entities.Division;
-import com.nicolaszbq.ExerciseWorksheetManager.entities.Exercise;
-import com.nicolaszbq.ExerciseWorksheetManager.entities.User;
-import com.nicolaszbq.ExerciseWorksheetManager.entities.Worksheet;
+import com.nicolaszbq.ExerciseWorksheetManager.entities.*;
 import com.nicolaszbq.ExerciseWorksheetManager.repository.DivisionRepository;
 import com.nicolaszbq.ExerciseWorksheetManager.repository.UserRepository;
 import com.nicolaszbq.ExerciseWorksheetManager.repository.WorksheetRepository;
@@ -114,6 +112,53 @@ public class WorksheetService {
 
         work.getDivisions().add(div);
         worksheetRepository.save(work);
+    }
+
+
+
+    public WorksheetResponseDTO update(String id, WorksheetRequestDTO dto){
+        Worksheet w = worksheetRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Worksheet not found"));
+        User u = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+        User trainer = userRepository.findById(dto.getTrainerId())
+                .orElseThrow(() -> new RuntimeException("Trainer not found"));
+
+        List<DivisionRequestDTO> divs = dto.getDivisions();
+        List<Exercise> exercises = new ArrayList<>();
+        List<Division> divisions = new ArrayList<>();
+        //cria a lista de divisoes e converte divisionRequest para division entity
+        for(DivisionRequestDTO d: divs){
+            Division newDiv = new Division(null,d.getType(),d.getName());
+            newDiv.setWorksheet(w);
+
+            //converte exerciseRequest em exercise entity
+            for(ExerciseRequestDTO e : d.getExercises()){
+                Exercise exercise = new Exercise();
+                exercise.setName(e.getName());
+                exercise.setReps(e.getReps());
+                exercise.setSeries(e.getSeries());
+                exercise.setDescription(e.getDescription());
+                exercise.setVideoUrl(e.getVideoUrl());
+
+
+                //adiciona exercicios à divisao atual
+                newDiv.addExercise(exercise);
+                exercises.add(exercise);
+                exercise.setDivision(newDiv);
+            }
+            divisions.add(newDiv);
+        }
+
+        w.setName(dto.getName());
+        w.setUser(u);
+        w.setTrainer(trainer);
+        w.getDivisions().clear();
+        w.setDivisions(divisions);
+
+        Worksheet savedWorksheet = worksheetRepository.save(w);
+        return mapper.apply(savedWorksheet);
+
     }
 
     public Worksheet saveWorksheet(Worksheet worksheet){
