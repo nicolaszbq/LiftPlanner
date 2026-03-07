@@ -32,12 +32,26 @@
                 <span class="icon">🚪</span>
                 <span>Sair</span>
             </button>
+
+            <button id="btnProfile" class="nav-btn" onclick="openProfile()">
+                <span class="icon">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/036/885/313/small/blue-profile-icon-free-png.png"/>
+                </span>
+                <span>Perfil</span>
+            </button>
         </nav>
     </aside>
 
     <main class="content">
         <div id="contentArea"></div>
     </main>
+</div>
+
+<!-- Edit Worksheet Modal Overlay -->
+<div id="editModal" class="modal-overlay">
+    <div class="modal-box">
+        <div id="editModalContent"></div>
+    </div>
 </div>
 
 <script src="js/dashboard.js"></script>

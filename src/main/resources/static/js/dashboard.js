@@ -102,26 +102,30 @@
             });
 
             html += `
-        <div class="worksheet-card">
-            
+        <div class="worksheet-card" data-id="${ws.id}">
             <div class="worksheet-header">
                 <h3>${ws.name}</h3>
             </div>
-
             <div class="worksheet-body">
                 <p class="division-title">Divisões:</p>
                 <ul class="division-list">
                     ${divisionsHTML}
                 </ul>
             </div>
-        
         </div>
-    `;  
-    html += `</div>`
+        `;
         });
 
-        
-        content.innerHTML = html; // escreve tudo de uma vez
+        html += `</div>`;
+        content.innerHTML = html;
+
+        // Abre painel de edição ao clicar em um card
+        content.querySelectorAll(".worksheet-card").forEach(card => {
+            card.addEventListener("click", () => {
+                const ws = worksheets.find(w => w.id === card.dataset.id);
+                if (ws) renderEditBuilder(ws);
+            });
+        });
     }
 
 
@@ -295,6 +299,179 @@
     async function logout(){
         localStorage.removeItem("user");
         window.location.href = "index.html";
+    }
+
+    // 📌 Abre o modal de edição de uma ficha existente
+    function renderEditBuilder(ws) {
+        const modal = document.getElementById("editModal");
+        const modalContent = document.getElementById("editModalContent");
+
+        modalContent.innerHTML = `
+            <h2>Editar Ficha</h2>
+            <input type="text" id="editWorksheetName" placeholder="Nome da ficha" value="${ws.name}">
+            <div class="user-lookup-row">
+                <input type="text" id="userEmailSearch" placeholder="Email do aluno">
+                <button id="lookupUserBtn">Buscar Aluno</button>
+            </div>
+            <span id="userLookupFeedback" class="lookup-feedback"></span>
+            <div id="editDivisionsArea"></div>
+            <button id="addDivisionBtn">Adicionar Divisão</button>
+            <div class="modal-actions">
+                <button id="updateWorksheetBtn">Salvar Alterações</button>
+                <button id="cancelEditBtn">Cancelar</button>
+            </div>
+        `;
+
+        let resolvedUserId = null;
+
+        const divisionsArea = document.getElementById("editDivisionsArea");
+        ws.divisions.forEach(div => {
+            const divEl = createDivisionElement(div.type, div.name);
+            divisionsArea.appendChild(divEl);
+            const exerciseArea = divEl.querySelector(".exerciseArea");
+            (div.exercises || []).forEach(ex => {
+                exerciseArea.appendChild(createExerciseElement(ex.name, ex.reps, ex.series, ex.description, ex.videoUrl));
+            });
+        });
+
+        document.getElementById("addDivisionBtn").addEventListener("click", () => {
+            divisionsArea.appendChild(createDivisionElement());
+        });
+
+        document.getElementById("lookupUserBtn").addEventListener("click", async () => {
+            const email = document.getElementById("userEmailSearch").value.trim();
+            const feedback = document.getElementById("userLookupFeedback");
+            if (!email) {
+                feedback.textContent = "Digite um email.";
+                feedback.style.color = "var(--accent)";
+                return;
+            }
+            try {
+                const res = await fetch(`/users/getId/${encodeURIComponent(email)}`);
+                if (!res.ok) {
+                    feedback.textContent = "Aluno não encontrado.";
+                    feedback.style.color = "var(--accent)";
+                    resolvedUserId = null;
+                    return;
+                }
+                const text = await res.text();
+                resolvedUserId = text.trim().replace(/^"|"$/g, "");
+                feedback.textContent = "Aluno encontrado!";
+                feedback.style.color = "var(--success)";
+            } catch(e) {
+                feedback.textContent = "Erro ao buscar aluno.";
+                feedback.style.color = "var(--accent)";
+                resolvedUserId = null;
+            }
+        });
+
+        document.getElementById("updateWorksheetBtn").addEventListener("click", () => updateWorksheet(ws.id, resolvedUserId));
+        document.getElementById("cancelEditBtn").addEventListener("click", closeEditModal);
+
+        // Fecha ao clicar no backdrop
+        modal.onclick = (e) => { if (e.target === modal) closeEditModal(); };
+
+        modal.classList.add("active");
+    }
+
+    // Fecha o modal de edição
+    function closeEditModal() {
+        document.getElementById("editModal").classList.remove("active");
+    }
+
+    // Cria um elemento de divisão para o formulário de edição
+    function createDivisionElement(type, name) {
+        const divEl = document.createElement("div");
+        divEl.classList.add("division");
+        divEl.innerHTML = `
+            <select class="divisionType">
+                <option value="PERDAY" ${type === 'PERDAY' ? 'selected' : ''}>Por Dia</option>
+                <option value="PERBODYTYPE" ${type === 'PERBODYTYPE' ? 'selected' : ''}>Por Grupo Muscular</option>
+                <option value="OTHER" ${type === 'OTHER' ? 'selected' : ''}>Outro</option>
+            </select>
+            <input type="text" class="divisionName" placeholder="Nome da divisão" value="${name || ''}">
+            <button class="addExercise">Adicionar Exercício</button>
+            <div class="exerciseArea"></div>
+        `;
+        divEl.querySelector(".addExercise").addEventListener("click", () => {
+            divEl.querySelector(".exerciseArea").appendChild(createExerciseElement());
+        });
+        return divEl;
+    }
+
+    // Cria um elemento de exercício para o formulário de edição
+    function createExerciseElement(name, reps, series, description, videoUrl) {
+        const exEl = document.createElement("div");
+        exEl.classList.add("exercise-container");
+        exEl.innerHTML = `
+            <input type="text" class="exerciseName" placeholder="Nome do exercício" value="${name || ''}">
+            <input type="text" class="exerciseReps" placeholder="Repetições" value="${reps || ''}">
+            <input type="text" class="exerciseSeries" placeholder="Séries" value="${series || ''}">
+            <input type="text" class="exerciseDescription" placeholder="Descrição" value="${description || ''}">
+            <input type="text" class="exerciseUrl" placeholder="URL do vídeo" value="${videoUrl || ''}">
+        `;
+        return exEl;
+    }
+
+    // Envia a atualização da ficha para a API
+    async function updateWorksheet(worksheetId, resolvedUserId) {
+        const name = document.getElementById("editWorksheetName").value.trim();
+        if (!name) {
+            alert("Digite um nome para a ficha.");
+            return;
+        }
+        if (!resolvedUserId) {
+            alert("Busque e confirme o email do aluno antes de salvar.");
+            return;
+        }
+
+        const user = JSON.parse(localStorage.getItem("user"));
+        const trainerId = user && user.id;
+
+        const divisions = [];
+        // Busca apenas dentro do modal para evitar conflitos com outros formulários
+        const modalContent = document.getElementById("editModalContent");
+        modalContent.querySelectorAll(".division").forEach(div => {
+            const divisionName = div.querySelector(".divisionName").value.trim();
+            const typeEl = div.querySelector(".divisionType");
+            const divisionType = typeEl ? typeEl.value : "OTHER";
+            if (!divisionName) return;
+
+            const exercises = [];
+            div.querySelectorAll(".exercise-container").forEach(exDiv => {
+                const exName = exDiv.querySelector(".exerciseName").value.trim();
+                if (!exName) return;
+                exercises.push({
+                    name: exName,
+                    reps: parseInt(exDiv.querySelector(".exerciseReps").value) || 0,
+                    series: parseInt(exDiv.querySelector(".exerciseSeries").value) || 0,
+                    description: exDiv.querySelector(".exerciseDescription").value,
+                    videoUrl: exDiv.querySelector(".exerciseUrl").value
+                });
+            });
+            divisions.push({ name: divisionName, type: divisionType, exercises });
+        });
+
+        const body = { name, userId: resolvedUserId, trainerId, divisions };
+        try {
+            const res = await fetch(`/worksheets/update/${worksheetId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) {
+                const text = await res.text().catch(() => null);
+                throw new Error(text || "Erro ao atualizar ficha");
+            }
+            alert("Ficha atualizada com sucesso!");
+            closeEditModal();
+            worksheets = [];
+            await getWorksheets();
+            renderWorksheetList();
+        } catch(e) {
+            console.error("Erro ao atualizar ficha:", e);
+            alert("Erro ao atualizar: " + (e && e.message ? e.message : ""));
+        }
     }
 
     async function saveWorksheet() {
