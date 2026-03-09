@@ -14,35 +14,54 @@
 <div class="dashboard">
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo-icon">💪</div>
+            <div class="logo-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="10" width="4" height="4" rx="1"/><rect x="5" y="8" width="3" height="8" rx="1"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                    <rect x="16" y="8" width="3" height="8" rx="1"/><rect x="19" y="10" width="4" height="4" rx="1"/>
+                </svg>
+            </div>
             <h1>LiftPlanner</h1>
         </div>
-        
+
         <nav class="sidebar-nav">
             <button id="btnView" class="nav-btn active">
-                <span class="icon">📋</span>
+                <span class="icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                        <rect x="9" y="3" width="6" height="4" rx="1"/>
+                        <line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="12" y2="16"/>
+                    </svg>
+                </span>
                 <span>Minhas Fichas</span>
             </button>
             <button id="btnCreate" class="nav-btn">
-                <span class="icon">➕</span>
+                <span class="icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                </span>
                 <span>Criar Ficha</span>
             </button>
-
-            <button id="btnLogout" class="nav-btn" onclick="logout()">
-                <span class="icon">🚪</span>
+            <button id="btnLogout" class="nav-btn logout-btn" onclick="logout()">
+                <span class="icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </span>
                 <span>Sair</span>
             </button>
-
-            <button id="btnProfile" class="nav-btn">
-                <span class="icon">
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/036/885/313/small/blue-profile-icon-free-png.png"/>
-                </span>
-                <span>Perfil</span>
-            </button>
-            
-            
-            
         </nav>
+
+        <button id="btnProfile" class="profile-btn">
+            <div class="profile-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+            </div>
+            <span>Perfil</span>
+        </button>
     </aside>
 
     <main class="content">

@@ -67,7 +67,9 @@ body {
 }
 
 .logo-icon {
-    font-size: 32px;
+    display: flex;
+    align-items: center;
+    color: var(--primary-color);
 }
 
 .sidebar-header h1 {
@@ -82,7 +84,8 @@ body {
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
+    flex: 1;
 }
 
 .nav-btn {
@@ -102,9 +105,13 @@ body {
 }
 
 .nav-btn .icon {
-    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
 }
-
 .nav-btn:hover {
     background: rgba(0, 212, 255, 0.08);
     border-color: var(--primary-color);
@@ -365,14 +372,53 @@ p {
 }
 
 .logout-btn {
-    margin-top: auto;  /* empurra pro final */
-    border-color: #ff6b6b !important;
+    margin-top: auto;
+    border-color: rgba(255, 107, 107, 0.3) !important;
     color: #ff6b6b !important;
 }
 
 .logout-btn:hover {
-    background: #ff6b6b !important;
-    color: var(--bg-dark) !important;
+    background: rgba(255, 107, 107, 0.1) !important;
+    border-color: #ff6b6b !important;
+    color: #ff6b6b !important;
+}
+
+/* ===== PROFILE CARD ===== */
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-top: 12px;
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.12);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.profile-btn:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.profile-avatar {
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--primary-color);
 }
 
 /* ===== MODAL OVERLAY ===== */
