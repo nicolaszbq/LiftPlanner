@@ -35,6 +35,11 @@ public class UserController {
         return userService.findMembers(q);
     }
 
+    @GetMapping("/getByEmail/{email}")
+    public Optional<UserResponseDTO> getUserByEmail(@PathVariable String email){
+        return userService.findUserByEmail(email);
+    }
+
     @GetMapping("/getId/{email}")
     public String getIdByEmail(@PathVariable String email){
         return userService.getIdByEmail(email);

@@ -161,6 +161,10 @@ public class WorksheetService {
 
     }
 
+    public Optional<WorksheetResponseDTO> getWorksheetByUserId(String userId){
+        return worksheetRepository.getWorksheetByUserId(userId).map(mapper);
+    }
+
     public Worksheet saveWorksheet(Worksheet worksheet){
         
         for(Division div : worksheet.getDivisions()){

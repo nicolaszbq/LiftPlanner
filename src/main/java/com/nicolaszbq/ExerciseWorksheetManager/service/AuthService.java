@@ -29,10 +29,11 @@ public class AuthService {
         if(userRepository.existsByEmail(dto.getEmail())){
             throw new RuntimeException("Email alredy in use!");
         }
-        if(dto.getRole() == Role.ADMIN || dto.getRole() == null ){
+        if(dto.getRole() == Role.ADMIN ){
             throw new RuntimeException("Invalid Role!");
         }
         User u;
+
         if(dto.getRole() == Role.MEMBER){
             u = UserMember.builder()
                     .username(dto.getName())
@@ -40,6 +41,8 @@ public class AuthService {
                     .password(passwordEncoder.encode(dto.getPassword()))
                     .role(dto.getRole())
                     .build();
+            System.out.println("USERNAME: "+ u.getUsername() + "<- username");
+            System.out.println("PASSWORD: "+ u.getPassword() + "<- password");
         }else {
             u = UserTrainer.builder()
                     .username(dto.getName())
@@ -47,6 +50,11 @@ public class AuthService {
                     .password(passwordEncoder.encode(dto.getPassword()))
                     .role(dto.getRole())
                     .build();
+            System.out.println("USERNAME: "+ u.getUsername() + "<- username");
+        }
+
+        if(dto.getRole() == null ){
+            u.setRole(Role.MEMBER);
         }
 
         User saved = userRepository.save(u);

@@ -28,6 +28,10 @@ public class UserService {
     }
 
 
+    public Optional<UserResponseDTO> findUserByEmail(String email){
+        return userRepository.findByEmail(email).map(mapper);
+    }
+
     public UserResponseDTO create(UserRequestDTO dto){
         if(userRepository.existsByEmail(dto.getEmail())){
             throw new RuntimeException("This email was alredy used!");

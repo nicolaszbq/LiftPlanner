@@ -44,6 +44,11 @@ public class WorksheetController {
         return worksheetService.findWorksheetById(id);
     }
 
+    @GetMapping("/findByUser/{id}")
+    public Optional<WorksheetResponseDTO> findWorksheetByUserId(@PathVariable String id){
+        return worksheetService.getWorksheetByUserId(id);
+    }
+
     @DeleteMapping("/deleteWorksheet/{id}")
     public void deleteWorksheetById(@PathVariable String id){
         worksheetService.deleteWorksheetById(id);

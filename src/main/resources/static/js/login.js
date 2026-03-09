@@ -33,6 +33,6 @@ form.addEventListener("submit", async (e) => {
     if (data.role === "TRAINER") {
         window.location.href = "../dashboard.html";
     } else {
-        window.location.href = "../dashboard.html";
+        window.location.href = "../userArea.html";
     }
 });

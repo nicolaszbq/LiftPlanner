@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User area</title>
+    <link rel="stylesheet" href="css/userArea.css">
+</head>
+<body>
+    <div class="userArea">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">💪</div>
+                <h1>LiftPlanner</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button id="btnView" class="nav-btn active">
+                <span class="icon">📋</span>
+                <span>Minhas Ficha</span>
+            </button>
+
+            <button id="btnProfile" class="nav-btn">
+                <span class="icon">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/036/885/313/small/blue-profile-icon-free-png.png"/>
+                </span>
+                <span>Perfil</span>
+            </button>
+
+            <button id="btnLogout" class="nav-btn" onclick="logout()">
+                <span class="icon">🚪</span>
+                <span>Sair</span>
+            </button>
+
+            
+            </nav>
+        </aside>
+    </div>
+    
+    <script src="js/userArea.js"></script>
+</body>
+</html>

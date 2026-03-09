@@ -22,7 +22,8 @@
         }
 
         try{
-            const res = await fetch(`/users/getMembers?q=${encodeURIComponent(query)}`);
+            const user = localStorage.getItem("user");
+            const res = await fetch(`/users/findById/${user.id}`);
             if(!res.ok) return;
             const list = await res.json();
             showMemberResults(list);
@@ -36,8 +37,10 @@
         if(!container) return;
         container.innerHTML = "";
         if(!list || list.length === 0){
-            container.innerHTML = `<div class=\"result-empty\">Nenhum aluno encontrado</div>`;
+            //nao tente arrumar isso, ta totalmente QUEBRADO
+            //container.innerHTML = `<div class=\"result-empty\">Nenhum aluno encontrado</div>`;
             return;
+        }else{
         }
         list.forEach(u => {
             const div = document.createElement("div");
@@ -56,6 +59,12 @@
 
     getWorksheets();
     let worksheets = [];
+
+    document.getElementById("btnProfile")
+        .addEventListener("click", function(){
+            updateActiveButton(this);
+            renderProfileArea();
+        })
 
     document.getElementById("btnView")
         .addEventListener("click", function(){
@@ -79,6 +88,28 @@
         
     renderWorksheetList();
 
+
+    async function renderProfileArea(){
+
+    let html = `
+        <h2>Meu Perfil</h2>
+        <div class="profile-area">
+            <div class="profile-info">
+                <p>Username: <span id="userName"></span></p>
+                <p>Email: <span id="userEmail"></span></p>
+            </div>
+        </div>
+    `;
+
+    content.innerHTML = html;
+
+    const user = await getUserInfo();
+    console.log("USER RECEBIDO:", user);
+    console.log(user);
+
+    document.getElementById("userName").textContent = user.username;
+    document.getElementById("userEmail").textContent = user.email;
+}
 
     // 📌 Render lista de fichas
     function renderWorksheetList(){
@@ -139,6 +170,24 @@
             const exerciseList = await response.json();
         }catch(error){console.log("Erro ao salvar Exercicio: ", error)}
     }
+
+    async function getUserInfo() {
+    try {
+        const userRaw = localStorage.getItem("user");
+        const user = JSON.parse(userRaw);
+
+        const response = await fetch(`/users/findById/${user.id}`);
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar usuário");
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error(error);
+    }
+}
     
     async function getWorksheets() {
         const userRaw = localStorage.getItem("user");
@@ -185,6 +234,7 @@
             const id = text.trim().replace(/^"|"$/g, "");
             console.log("getIdByEmail -> id:", id);
             return id;
+            
         }catch(error){
             console.error("getIdByEmail error: ", error);
             return null;
@@ -204,7 +254,7 @@
             <button id="addDivision">Adicionar Divisão</button>
             <button id="saveWorksheet">Salvar Ficha</button>
             <button id="cancel">Cancelar</button>
-            <input type="text" id="memberSearch" placeholder="Buscar aluno por nome">
+            <input type="text" id="memberSearch" placeholder="Buscar aluno por EMAIL">
             <div id="memberResults" class="autocomplete-results"></div>
         `;
 
