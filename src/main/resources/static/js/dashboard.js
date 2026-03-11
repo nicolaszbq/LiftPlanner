@@ -59,6 +59,10 @@
         });
     }
 
+    async function returnToInitalPage(){
+        window.location.href = "index.html";
+    }
+
     getWorksheets();
     let worksheets = [];
 
