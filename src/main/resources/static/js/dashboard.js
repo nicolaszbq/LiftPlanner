@@ -1,6 +1,8 @@
     const content = document.getElementById("contentArea");
 
     let selectedMember = null;
+    const userv = localStorage.getItem("user");
+
 
     // debounce: evita chamar a API a cada tecla
     function debounce(fn, wait){
@@ -84,10 +86,8 @@
         });
         button.classList.add("active");
     }
-
         
     renderWorksheetList();
-
 
     async function renderProfileArea(){
 

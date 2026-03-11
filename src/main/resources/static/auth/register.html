@@ -8,35 +8,60 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/register.css">
+    <script src="../js/theme.js"></script>
 </head>
 <body>
+
+    <!-- Theme toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+    </button>
+
     <div id="registerDiv">
-        <h2>💪 LiftPlanner</h2>
+        <div class="card-logo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="10" width="4" height="4" rx="1"/>
+                <rect x="5" y="8" width="3" height="8" rx="1"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+                <rect x="16" y="8" width="3" height="8" rx="1"/>
+                <rect x="19" y="10" width="4" height="4" rx="1"/>
+            </svg>
+            <span>LiftPlanner</span>
+        </div>
         <p>Junte-se à comunidade!</p>
-        
+
         <form id="registerForm">
             <input type="text" name="name" placeholder="Nome completo" required>
             <input type="email" name="email" placeholder="E-mail" required>
             <input type="password" name="password" placeholder="Senha" required>
 
             <div class="role-selection">
-                <p>👤 Tipo de conta</p>
+                <p>Tipo de conta</p>
                 <label>
                     <input type="radio" name="role" value="MEMBER" required>
                     <span>Membro (Treino)</span>
                 </label>
-
                 <label>
                     <input type="radio" name="role" value="TRAINER">
                     <span>Treinador (Criar Treinos)</span>
                 </label>
             </div>
+
             <button type="submit">Criar Conta</button>
         </form>
-        
-        <a href="login.html">Já tem conta? Faça login 🔐</a>
+
+        <a href="login.html">Já tem conta? Faça login</a>
     </div>
-    
+
     <script src="../js/register.js"></script>
 </body>
 </html>
