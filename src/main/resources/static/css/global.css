@@ -178,12 +178,20 @@ body {
     line-height: 1.65;
 }
 
+#trainerArea{
+    display:flex;
+}
+
+#userArea{
+    display: flex;
+}
+
 .btn-trainer-area{
-    visibility: hidden;
+    display: none;
 }
 
 .btn-user-area{
-    visibility: hidden;
+    display: none;
 }
 
 .hero-btn {
