@@ -133,13 +133,16 @@
             let divisionsHTML = "";
 
             ws.divisions.forEach(div => {
-                divisionsHTML += `<li>${div.name}</li>`;
+                divisionsHTML += `
+                <li>${div.name}</li>
+                `;
             });
 
             html += `
         <div class="worksheet-card" data-id="${ws.id}">
             <div class="worksheet-header">
                 <h3>${ws.name}</h3>
+                <button class="deleteBtn" data-ws-id="${ws.id}">Deletar</button>
             </div>
             <div class="worksheet-body">
                 <p class="division-title">Divisões:</p>
@@ -161,8 +164,70 @@
                 if (ws) renderEditBuilder(ws);
             });
         });
+        content.querySelectorAll(".deleteBtn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation(); //impede o card de abrir o modal de edição
+                const wsId = btn.dataset.wsId;
+                showDeleteConfirmation(wsId);
+            });
+        });
     }
 
+    async function deleteWorksheet(){
+        
+    }
+
+    function showDeleteConfirmation(wsId) {
+        const modal = document.getElementById("deleteModal");
+        const title = document.getElementById("deleteModalTitle");
+        const msg = document.getElementById("deleteModalMsg");
+        const confirmBtn = document.getElementById("deleteConfirmBtn");
+        const cancelBtn = document.getElementById("deleteCancelBtn");
+
+        title.textContent = "Deletar Ficha";
+        msg.textContent = "Tem certeza que deseja deletar esta ficha? Esta ação não pode ser desfeita.";
+        confirmBtn.style.display = "";
+        cancelBtn.textContent = "Cancelar";
+
+        modal.classList.add("active");
+
+        // Cancelar — fecha o modal
+        cancelBtn.onclick = () => modal.classList.remove("active");
+
+        // Confirmar — chama a API
+        confirmBtn.onclick = async () => {
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = "Deletando...";
+
+            try {
+                const response = await fetch(`/worksheets/deleteWorksheet/${wsId}`, {
+                    method: "DELETE"
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro ${response.status}: ${response.statusText}`);
+                }
+
+                // Sucesso — muda o conteúdo do modal
+                title.textContent = "Ficha deletada com sucesso!";
+                msg.textContent = "A ficha foi removida permanentemente.";
+                confirmBtn.style.display = "none";
+                cancelBtn.textContent = "Fechar";
+
+                // Atualiza a lista de fichas
+                worksheets = [];
+                await getWorksheets();
+                renderWorksheetList();
+
+            } catch (err) {
+                // Erro — exibe o código do erro
+                title.textContent = "Erro ao deletar";
+                msg.textContent = err.message || "Ocorreu um erro inesperado.";
+                confirmBtn.style.display = "none";
+                cancelBtn.textContent = "Fechar";
+            }
+        };
+    }
 
     async function getExercises() {
         try{
