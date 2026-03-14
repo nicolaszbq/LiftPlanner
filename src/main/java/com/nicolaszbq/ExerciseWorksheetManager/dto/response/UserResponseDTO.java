@@ -15,4 +15,5 @@ public class UserResponseDTO {
     private String username;
     private Role role;
     private String email;
+    private String photoUrl;
 }

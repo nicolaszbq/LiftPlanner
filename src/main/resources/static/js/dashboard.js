@@ -94,25 +94,28 @@
     renderWorksheetList();
 
     async function renderProfileArea(){
+        const user = await getUserInfo();
 
-    let html = `
-        <h2>Meu Perfil</h2>
-        <div class="profile-area">
-            <div class="profile-info">
-                <p>Username: <span id="userName"></span></p>
-                <p>Email: <span id="userEmail"></span></p>
+        let html = `
+            <h2>Meu Perfil</h2>
+            <div class="profile-area">
+                <div class="profile-info">
+                    <img id="profilePhoto" class="pfpPhoto" src="">
+                    <p>Username: <span id="userName"></span></p>
+                    <p>Email: <span id="userEmail"></span></p>
+                </div>
             </div>
-        </div>
-    `;
+        `;
 
-    content.innerHTML = html;
+        content.innerHTML = html;
 
-    const user = await getUserInfo();
-    console.log("USER RECEBIDO:", user);
-    console.log(user);
-
-    document.getElementById("userName").textContent = user.username;
-    document.getElementById("userEmail").textContent = user.email;
+        const img = document.getElementById("profilePhoto");
+        console.log("USER RECEBIDO:", user);
+        console.log(user);
+        
+        img.src = user.photoUrl ? user.photoUrl : "caminho/para/avatar_padrao.svg";
+        document.getElementById("userName").textContent = user.username;
+        document.getElementById("userEmail").textContent = user.email;
 }
 
     // 📌 Render lista de fichas

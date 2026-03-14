@@ -21,6 +21,7 @@ public class UserMapperDTO implements Function<User, UserResponseDTO> {
                 .username(user.getUsername())
                 .role(user.getRole())
                 .email(user.getEmail())
+                .photoUrl(user.getPhotoUrl())
                 .build();
     }
 
