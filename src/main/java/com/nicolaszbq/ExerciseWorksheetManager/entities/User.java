@@ -24,6 +24,8 @@ public abstract class User implements UserDetails {
 
     private String username;
 
+    private String photoUrl;
+
     @Column(nullable = false, unique = true)
     private String email;
 

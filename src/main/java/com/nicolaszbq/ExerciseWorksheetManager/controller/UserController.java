@@ -4,11 +4,16 @@ import com.nicolaszbq.ExerciseWorksheetManager.dto.mapper.UserMapperDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.request.UserRequestDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.dto.response.UserResponseDTO;
 import com.nicolaszbq.ExerciseWorksheetManager.repository.UserRepository;
-import com.nicolaszbq.ExerciseWorksheetManager.entities.User;
 import com.nicolaszbq.ExerciseWorksheetManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +39,27 @@ public class UserController {
     public List<UserResponseDTO> getMembers(@RequestParam(required=false) String q){
         return userService.findMembers(q);
     }
+
+    @PostMapping("/uploadPhoto/{id}")
+    public ResponseEntity<String> uploadPhoto(
+            @PathVariable String id,
+            @RequestParam("file") MultipartFile file) throws IOException {
+
+        String filename = id + "_" + file.getOriginalFilename();
+
+        //define a pasta a qual a foto sera salva
+        Path savePath = Paths.get("uploads/" + filename);
+        Files.createDirectories(savePath.getParent()); // cria a pasta se não existir
+        Files.write(savePath, file.getBytes());
+
+        // cria a url da foto do usuario
+        String photoUrl = "/uploads/" + filename;
+
+        userService.updatePhotoUrl(id, photoUrl);
+
+        return ResponseEntity.ok(photoUrl);
+    }
+
 
     @GetMapping("/getByEmail/{email}")
     public Optional<UserResponseDTO> getUserByEmail(@PathVariable String email){

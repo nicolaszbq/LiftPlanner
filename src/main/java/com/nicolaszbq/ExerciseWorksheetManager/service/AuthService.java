@@ -40,6 +40,7 @@ public class AuthService {
                     .email(dto.getEmail())
                     .password(passwordEncoder.encode(dto.getPassword()))
                     .role(dto.getRole())
+                    .photoUrl(dto.getPhotoUrl())
                     .build();
             System.out.println("USERNAME: "+ u.getUsername() + "<- username");
             System.out.println("PASSWORD: "+ u.getPassword() + "<- password");
@@ -49,6 +50,7 @@ public class AuthService {
                     .email(dto.getEmail())
                     .password(passwordEncoder.encode(dto.getPassword()))
                     .role(dto.getRole())
+                    .photoUrl(dto.getPhotoUrl())
                     .build();
             System.out.println("USERNAME: "+ u.getUsername() + "<- username");
         }
@@ -63,6 +65,7 @@ public class AuthService {
                 .name(saved.getUsername())
                 .email(saved.getEmail())
                 .role(saved.getRole())
+                .photoUrl(saved.getPhotoUrl())
                 .build();
     }
 
@@ -80,6 +83,7 @@ public class AuthService {
                 .name(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
+                .photoUrl(user.getPhotoUrl())
                 .build();
     }
 

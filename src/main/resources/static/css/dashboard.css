@@ -530,7 +530,17 @@ button { font-family: 'Poppins', sans-serif; }
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background .15s;
+    transition: background.15s;
+}
+
+.deleteBtn{
+    padding: 3px 7px;
+    border: solid;
+    color: var(--accent-red);
+    border-radius: var(--radius);
+    border-color: var(--accent-red);
+    background-color: transparent;
+    size: 10px;
 }
 
 #deleteConfirmBtn:hover { background: #c04040; }
@@ -544,7 +554,7 @@ button { font-family: 'Poppins', sans-serif; }
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background .15s;
+    transition: background.15s;
 }
 
 #deleteCancelBtn:hover { background: var(--surface); }

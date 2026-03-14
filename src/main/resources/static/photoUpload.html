@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiftPlanner - Foto de Perfil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/photoUpload.css"/>
+    <script src="js/theme.js"></script>
+</head>
+<body>
+
+    <!-- Theme toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+    </button>
+
+    <div class="form-div">
+
+        <!-- Logo -->
+        <div class="card-logo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="10" width="4" height="4" rx="1"/>
+                <rect x="5" y="8" width="3" height="8" rx="1"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+                <rect x="16" y="8" width="3" height="8" rx="1"/>
+                <rect x="19" y="10" width="4" height="4" rx="1"/>
+            </svg>
+            <span>LiftPlanner</span>
+        </div>
+
+        <h2>Selecione sua foto!</h2>
+        <p class="subtitle">Esta etapa é opcional. Você pode pular agora e adicionar depois.</p>
+
+        <form id="photoForm">
+
+            <!-- Input de arquivo escondido — acionado pelo clique no avatar -->
+            <input type="file" id="photoInput" name="file" accept="image/*">
+
+            <!-- Avatar clicável -->
+            <label for="photoInput" class="avatar-picker" id="avatarPicker">
+                <!-- Preview (aparece após selecionar a foto) -->
+                <img id="photoPreview" class="avatar-preview" alt="Preview da foto">
+
+                <!-- Ícone padrão (escondido após selecionar a foto) -->
+                <div class="avatar-default" id="avatarDefault">
+                    <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                    </svg>
+                </div>
+
+                <!-- Overlay de hover com ícone de câmera -->
+                <div class="avatar-overlay">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                        <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                </div>
+            </label>
+
+            <p class="avatar-hint">Clique no ícone para selecionar sua foto</p>
+
+            <button type="submit" id="saveBtn">Salvar foto</button>
+        </form>
+
+        <a href="auth/login.html" class="skip-link">Pular por agora</a>
+    </div>
+
+    <!-- Preview em tempo real ao selecionar o arquivo -->
+    <script>
+        const photoInput   = document.getElementById("photoInput");
+        const photoPreview = document.getElementById("photoPreview");
+        const avatarDefault = document.getElementById("avatarDefault");
+        const avatarHint   = document.querySelector(".avatar-hint");
+
+        photoInput.addEventListener("change", () => {
+            const file = photoInput.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                photoPreview.src = url;
+                photoPreview.style.display = "block";
+                avatarDefault.style.display = "none";
+                avatarHint.textContent = "Foto selecionada — clique para trocar";
+            }
+        });
+    </script>
+
+    <script src="js/photoUpload.js"></script>
+</body>
+</html>

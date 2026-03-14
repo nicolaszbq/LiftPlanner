@@ -27,6 +27,12 @@ public class UserService {
                 .toList();
     }
 
+    public void updatePhotoUrl(String id, String photoUrl) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPhotoUrl(photoUrl);
+        userRepository.save(user);
+    }
 
     public Optional<UserResponseDTO> findUserByEmail(String email){
         return userRepository.findByEmail(email).map(mapper);
