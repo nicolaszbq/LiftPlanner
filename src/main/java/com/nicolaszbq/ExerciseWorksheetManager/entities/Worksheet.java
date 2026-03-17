@@ -22,7 +22,7 @@ public class Worksheet {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "worksheet", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "worksheet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Division> divisions = new ArrayList<>();
 
     @ManyToOne

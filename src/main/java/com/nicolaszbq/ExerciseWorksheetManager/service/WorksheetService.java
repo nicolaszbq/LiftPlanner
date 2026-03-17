@@ -127,6 +127,7 @@ public class WorksheetService {
         List<DivisionRequestDTO> divs = dto.getDivisions();
         List<Exercise> exercises = new ArrayList<>();
         List<Division> divisions = new ArrayList<>();
+
         //cria a lista de divisoes e converte divisionRequest para division entity
         for(DivisionRequestDTO d: divs){
             Division newDiv = new Division(null,d.getType(),d.getName());
@@ -153,8 +154,13 @@ public class WorksheetService {
         w.setName(dto.getName());
         w.setUser(u);
         w.setTrainer(trainer);
+
         w.getDivisions().clear();
-        w.setDivisions(divisions);
+
+        for(Division newDiv : divisions){
+            newDiv.setWorksheet(w);
+            w.getDivisions().add(newDiv);
+        }
 
         Worksheet savedWorksheet = worksheetRepository.save(w);
         return mapper.apply(savedWorksheet);

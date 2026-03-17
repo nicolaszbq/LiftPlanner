@@ -1,7 +1,9 @@
 const content = document.getElementById("contentArea");
 let worksheets = [];
+console.log(worksheets);
 
 // ─── Inicialização ────────────────────────────────────────────────
+worksheets.length =0;
 getUserWorksheet();
 
 document.getElementById("btnView").addEventListener("click", function () {
@@ -21,6 +23,7 @@ function updateActiveButton(button) {
 
 // ─── Perfil ───────────────────────────────────────────────────────
 async function renderProfileArea() {
+    document.getElementById("viewModal").classList.remove("active");
     const user = await getUserInfo();
     if (!user) return;
 
@@ -55,8 +58,13 @@ async function getUserInfo() {
     }
 }
 
+//
+
+
+
 // ─── Lista de fichas ─────────────────────────────────────────────
 function renderWorksheetList() {
+    document.getElementById("viewModal").classList.remove("active");
     if (worksheets.length === 0) {
         content.innerHTML = `
             <h2>Minhas Fichas</h2>
@@ -70,7 +78,7 @@ function renderWorksheetList() {
     worksheets.forEach(ws => {
         let divisionsHTML = ws.divisions.map(d => `<li>${d.name}</li>`).join("");
         html += `
-            <div class="worksheet-card">
+            <div class="worksheet-card" data-id="${ws.id}">
                 <div class="worksheet-header">
                     <h3>${ws.name}</h3>
                 </div>
@@ -84,7 +92,76 @@ function renderWorksheetList() {
 
     html += `</div>`;
     content.innerHTML = html;
+
+    content.querySelectorAll(".worksheet-card").forEach(card => {
+        card.addEventListener("click", () => {
+            const ws = worksheets.find(w => w.id === card.dataset.id);
+            renderWorksheetViewModal(ws);
+        });
+    });
 }
+
+function toEmbedUrl(videoUrl){
+    console.log(videoUrl);
+    const url = new URL(videoUrl);
+    const videoId = url.searchParams.get("v");  // retorna "abc123"
+    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+    return embedUrl;
+}
+
+function renderWorksheetViewModal(ws){
+    const modal = document.getElementById("viewModal");
+    const modalContent = document.getElementById("viewModalContent");
+
+    modalContent.innerHTML = `
+        <p>Sua ficha!</p>
+        <h1 id="worksheetName">${ws.name}</h1>
+        <div id="divisionsArea">
+        
+        </div>
+    `;
+
+    const divisionsArea = document.getElementById("divisionsArea");
+    ws.divisions.forEach(div => {
+        const divEl = createDivisionElement(div.type, div.name);
+        divisionsArea.appendChild(divEl);
+        const exerciseArea = divEl.querySelector(".exerciseArea");
+        (div.exercises || []).forEach(ex => {
+            exerciseArea.appendChild(createExerciseElement(ex.name, ex.reps, ex.series, ex.description, ex.videoUrl));
+        });
+    });
+    modal.classList.add("active");
+    modal.onclick = (e) => { if (e.target === modal) modal.classList.remove("active"); }
+}
+
+function createDivisionElement(type, name) {
+    const divEl = document.createElement("div");
+    divEl.classList.add("division");
+    divEl.innerHTML = `
+        <h3>${type}</h3>
+        <h2>${name}</h2>
+        <div class="exerciseArea"></div>
+    `;
+    return divEl;
+}
+
+function createExerciseElement(name, reps, series, description, videoUrl) {
+    const exEl = document.createElement("div");
+    exEl.classList.add("exercise-container");
+    const url = toEmbedUrl(videoUrl);
+    exEl.innerHTML = `
+        <p>${name}</p>
+        <p>Repetições: ${reps}</p>
+        <p>Series: ${series}</p>
+        <p>Como fazer? </p>
+        <p>${description}</p>
+        <p>Exemplo: </p>
+        <iframe src="${url}" frameborder="0" class="video-iframe"></iframe>
+    `;
+    return exEl;
+}
+
+
 
 async function getUserWorksheet() {
     const userRaw = localStorage.getItem("user");  
@@ -110,12 +187,20 @@ async function getUserWorksheet() {
         const worksheetsList = await response.json();
         console.log("Tipo:", typeof worksheetsList);
         console.log("Valor:", worksheetsList);
-        worksheets.push(worksheetsList);
+        if(worksheets === null){
+            //nao faça nada
+        }else{
+            worksheets.length = 0;
+            worksheets.push(worksheetsList);
+        }
+        
         renderWorksheetList();
     } catch (error) {
         console.error("Erro ao criar a requisição:", error);
     }
 }
+
+
 
 // ─── Logout ───────────────────────────────────────────────────────
 function logout() {

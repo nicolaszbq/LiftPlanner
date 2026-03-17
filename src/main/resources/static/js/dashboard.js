@@ -606,8 +606,9 @@
     }
 
     const divisions = [];
+    console.log("DIVISOES: "+ divisions);
 
-    document.querySelectorAll(".division").forEach(div => {
+    content.querySelectorAll(".division").forEach(div => {
 
         const divisionName = div.querySelector(".divisionName").value;
 
