@@ -29,6 +29,7 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
 
     localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("token", data.token);
 
     if (data.role === "TRAINER") {
         window.location.href = "../dashboard.html";
@@ -36,3 +37,11 @@ form.addEventListener("submit", async (e) => {
         window.location.href = "../userArea.html";
     }
 });
+
+function authHeaders() {
+    const token = localStorage.getItem("token");
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+}

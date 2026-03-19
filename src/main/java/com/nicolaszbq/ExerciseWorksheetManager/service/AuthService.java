@@ -7,6 +7,7 @@ import com.nicolaszbq.ExerciseWorksheetManager.entities.User;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.imps.UserMember;
 import com.nicolaszbq.ExerciseWorksheetManager.entities.imps.UserTrainer;
 import com.nicolaszbq.ExerciseWorksheetManager.enums.Role;
+import com.nicolaszbq.ExerciseWorksheetManager.infra.security.JwtService;
 import com.nicolaszbq.ExerciseWorksheetManager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
 
     //creates user and saves it to the database
     public AuthResponseDTO register(RegisterRequestDTO dto){
@@ -77,13 +81,14 @@ public class AuthService {
         if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
             throw new RuntimeException("Invalid credentials");
         }
-
+        String token = jwtService.generateToken(user);
         return AuthResponseDTO.builder()
                 .id(user.getId())
                 .name(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .photoUrl(user.getPhotoUrl())
+                .token(token)
                 .build();
     }
 

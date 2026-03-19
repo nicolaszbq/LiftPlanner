@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.*;
 
@@ -32,7 +33,7 @@ public class UserTrainer extends User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_TRAINER"));
     }
 
     @JsonIgnore
