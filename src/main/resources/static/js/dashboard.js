@@ -3,7 +3,13 @@
     let selectedMember = null;
     const userv = localStorage.getItem("user");
 
-
+    function authHeaders() {
+    const token = localStorage.getItem("token");
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+}
     // debounce: evita chamar a API a cada tecla
     function debounce(fn, wait){
         let t;
@@ -204,7 +210,8 @@
 
             try {
                 const response = await fetch(`/worksheets/deleteWorksheet/${wsId}`, {
-                    method: "DELETE"
+                    method: "DELETE",
+                    headers:authHeaders()
                 });
 
                 if (!response.ok) {
@@ -400,7 +407,7 @@
         try{
             const response = await fetch("/exercises/saveExercise",{
                 method:"POST",
-                headers:{ "Content-Type": "application/json" },
+                headers: authHeaders(),
                 body: JSON.stringify({
                     namee,
                     reps,
@@ -579,7 +586,7 @@
         try {
             const res = await fetch(`/worksheets/update/${worksheetId}`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers:authHeaders(),
                 body: JSON.stringify(body)
             });
             if (!res.ok) {
@@ -672,9 +679,7 @@
     try {
         const response = await fetch("/worksheets/createWorksheet", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: authHeaders(),
             body: JSON.stringify(worksheet)
         });
 
