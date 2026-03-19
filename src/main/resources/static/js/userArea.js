@@ -114,6 +114,7 @@ function renderWorksheetViewModal(ws){
     const modalContent = document.getElementById("viewModalContent");
 
     modalContent.innerHTML = `
+        <button class="closeViewModalBtn" onclick="closeViewModal()">Fechar</button>
         <p>Sua ficha!</p>
         <h1 id="worksheetName">${ws.name}</h1>
         <div id="divisionsArea">
@@ -132,6 +133,10 @@ function renderWorksheetViewModal(ws){
     });
     modal.classList.add("active");
     modal.onclick = (e) => { if (e.target === modal) modal.classList.remove("active"); }
+}
+async function closeViewModal() {
+    const modal = document.getElementById("viewModal");
+    modal.classList.remove("active");
 }
 
 function createDivisionElement(type, name) {

@@ -60,12 +60,14 @@ public class SecurityConfig {
                         // Fotos (upload de foto é chamado após registro)
                         .requestMatchers(HttpMethod.POST, "/users/uploadPhoto/**").permitAll()
                         // Regras de role
+                        .requestMatchers(HttpMethod.POST, "/worksheets/update/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.GET, "/worksheets/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/worksheets/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.PUT, "/worksheets/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.POST, "/worksheets/**").hasRole("TRAINER")
                         // O resto exige autenticação
                         .anyRequest().authenticated()
+
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

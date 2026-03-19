@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.nicolaszbq.ExerciseWorksheetManager.dto.request.WorksheetRequestDTO;
@@ -29,6 +30,7 @@ public class WorksheetController {
     }
 
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
     public WorksheetResponseDTO update(@PathVariable String id,@RequestBody WorksheetRequestDTO dto){
         return worksheetService.update(id,dto);
     }
