@@ -11,7 +11,7 @@ form.addEventListener("submit", async (e) =>{
     
     console.log("OLD USER ID: "+ pendingUserId);
 
-    const response = await fetch("http://localhost:8080/auth/register",{
+    const response = await fetch("/auth/register",{
         method: "POST",
         headers:{
             "Content-Type": "application/json"

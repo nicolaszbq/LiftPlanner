@@ -444,3 +444,10 @@ body {
 .closeViewModalBtn:hover{
     transform: translateY(-1px);
 }
+.pfpPhoto {
+  cursor: pointer;
+  transition: filter .2s ease;
+}
+.pfpPhoto:hover {
+  filter: brightness(.9);
+}

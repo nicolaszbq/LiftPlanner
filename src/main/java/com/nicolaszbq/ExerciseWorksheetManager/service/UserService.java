@@ -47,6 +47,9 @@ public class UserService {
         return mapper.apply(savedUser);
     }
 
+    public void setPhotoByUserId(String id){
+
+    }
     public String getIdByEmail(String email){
         Optional<User> entity = userRepository.findByEmail(email);
         String id = entity.get().getId();

@@ -32,18 +32,50 @@ async function renderProfileArea() {
         <div class="profile-area">
             <div class="profile-info">
                 <img id="profilePhoto" class="pfpPhoto" src="" alt="Foto de perfil">
+                <input id="photoInput" type="file" accept="image/*" hidden>
                 <p>Username: <span id="userName"></span></p>
                 <p>Email: <span id="userEmail"></span></p>
             </div>
         </div>
     `;
+    
 
     const img = document.getElementById("profilePhoto");
+    const input = document.getElementById("photoInput");
+
+    img.addEventListener("click", () => input.click());
+    input.addEventListener("change", onPhotoSelected);
+
     img.src = user.photoUrl ? user.photoUrl : "";
     document.getElementById("userName").textContent = user.username;
     document.getElementById("userEmail").textContent = user.email;
 }
 
+async function onPhotoSelected(e) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const formData = new FormData();
+  formData.append("file", file); // nome "file" precisa bater com @RequestParam("file")
+
+  const res = await fetch(`/users/uploadPhoto/${user.id}`, {
+    method: "POST",
+    body: formData
+  });
+
+  if (!res.ok) {
+    alert("Falha ao enviar foto");
+    return;
+  }
+
+  const photoUrl = await res.text(); // endpoint retorna string
+  document.getElementById("profilePhoto").src = photoUrl;
+
+  // opcional: manter localStorage atualizado
+  user.photoUrl = photoUrl;
+  localStorage.setItem("user", JSON.stringify(user));
+}
 async function getUserInfo() {
     try {
         const userRaw = localStorage.getItem("user");

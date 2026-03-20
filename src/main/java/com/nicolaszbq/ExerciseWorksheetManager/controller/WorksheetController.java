@@ -30,7 +30,7 @@ public class WorksheetController {
     }
 
     @PostMapping("/update/{id}")
-    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @PreAuthorize("hasRole('TRAINER')")
     public WorksheetResponseDTO update(@PathVariable String id,@RequestBody WorksheetRequestDTO dto){
         return worksheetService.update(id,dto);
     }
