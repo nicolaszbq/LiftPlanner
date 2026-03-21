@@ -58,9 +58,10 @@ public class SecurityConfig {
                         // Recursos estáticos públicos
                         .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/uploads/**", "/images/**").permitAll()
                         // Auth pública
-
-
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
+
+                        //permitindo todas requisições ao gemini (apenas para testar)
+                        .requestMatchers("/geminiapi/**").permitAll()
 
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
