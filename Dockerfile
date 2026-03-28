@@ -1,16 +1,15 @@
-FROM ubuntu:latest AS build
+FROM maven:3.9.15-eclipse-temurin-25 AS build
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-COPY . .
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
 
-RUN apt-get install maven -y
-RUN mvn clean install
+RUN mvn -B -DskipTests package
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:25-jre
+
+WORKDIR /app
+COPY --from=build /app/target/ExerciseWorksheetManager-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
-
-COPY --from=build /target/deploy_render-1.0.0.jar app.jar
-
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8080}"]
