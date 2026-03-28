@@ -69,8 +69,15 @@
         window.location.href = "index.html";
     }
 
-    getWorksheets();
     let worksheets = [];
+
+    async function initDashboard() {
+        worksheets.length = 0;
+        await getWorksheets();
+        renderWorksheetList();
+    }
+
+    initDashboard();
 
     document.getElementById("btnProfile")
         .addEventListener("click", function(){
@@ -169,7 +176,7 @@
         // Abre painel de edição ao clicar em um card
         content.querySelectorAll(".worksheet-card").forEach(card => {
             card.addEventListener("click", () => {
-                const ws = worksheets.find(w => w.id === card.dataset.id);
+                const ws = worksheets.find(w => String(w.id) === card.dataset.id);
                 if (ws) renderEditBuilder(ws);
             });
         });

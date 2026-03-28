@@ -1,8 +1,12 @@
 const content = document.getElementById("contentArea");
 let worksheets = [];
 
-worksheets.length = 0;
-getUserWorksheet();
+async function initUserArea() {
+    worksheets.length = 0;
+    await getUserWorksheet();
+}
+
+initUserArea();
 
 document.getElementById("btnView").addEventListener("click", function () {
     updateActiveButton(this);
@@ -220,7 +224,7 @@ function createDivisionElement(division) {
 
     const exerciseArea = document.createElement("div");
     exerciseArea.className = "exerciseArea";
-    exerciseArea.hidden = true;
+    exerciseArea.style.display = "none";
 
     if (exercises.length === 0) {
         const emptyState = document.createElement("p");
@@ -237,7 +241,7 @@ function createDivisionElement(division) {
         const isExpanded = headerButton.getAttribute("aria-expanded") === "true";
         headerButton.setAttribute("aria-expanded", String(!isExpanded));
         divisionCard.classList.toggle("is-open", !isExpanded);
-        exerciseArea.hidden = isExpanded;
+        exerciseArea.style.display = isExpanded ? "none" : "flex";
     });
 
     divisionCard.append(headerButton, exerciseArea);
@@ -270,7 +274,7 @@ function createExerciseElement(exercise) {
 
     const details = document.createElement("div");
     details.className = "exercise-details";
-    details.hidden = true;
+    details.style.display = "none";
 
     const metrics = document.createElement("div");
     metrics.className = "exercise-metrics";
@@ -314,7 +318,7 @@ function createExerciseElement(exercise) {
         const isExpanded = headerButton.getAttribute("aria-expanded") === "true";
         headerButton.setAttribute("aria-expanded", String(!isExpanded));
         exerciseCard.classList.toggle("is-open", !isExpanded);
-        details.hidden = isExpanded;
+        details.style.display = isExpanded ? "none" : "flex";
     });
 
     exerciseCard.append(headerButton, details);

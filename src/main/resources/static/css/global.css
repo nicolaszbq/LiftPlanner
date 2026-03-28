@@ -138,7 +138,7 @@ body {
     min-height: calc(100vh - 60px);
     background:
         linear-gradient(rgba(214,235,243,.84), rgba(185,216,225,.78)),
-        url("../images/trentwins.jpg") center/cover no-repeat;
+        url("../images/backgorund.png") center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,7 +149,7 @@ body {
 [data-theme="dark"] .hero {
     background:
         linear-gradient(rgba(22,32,48,.88), rgba(26,38,54,.86)),
-        url("../images/trentwins.jpg") center/cover no-repeat;
+        url("../images/backgorund.png") center/cover no-repeat;
 }
 
 .hero-content {
