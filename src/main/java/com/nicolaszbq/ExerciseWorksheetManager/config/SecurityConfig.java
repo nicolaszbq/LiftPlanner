@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/uploads/**", "/images/**").permitAll()
                         // Auth pública
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
-
+                        .requestMatchers("/error").permitAll()
                         //permitindo todas requisições ao gemini (apenas para testar)
 
                         .requestMatchers("/auth/**").permitAll()
@@ -69,8 +69,9 @@ public class SecurityConfig {
 
                         // Fotos (upload de foto é chamado após registro)
                         .requestMatchers(HttpMethod.POST, "/users/uploadPhoto/**").permitAll()
-                        
                         .requestMatchers(HttpMethod.GET, "/users/uploadPhoto/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         // Regras de role
                         .requestMatchers(HttpMethod.POST, "/worksheets/update/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.GET, "/worksheets/**").permitAll()
