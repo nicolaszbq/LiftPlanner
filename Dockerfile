@@ -1,15 +1,21 @@
-FROM maven:3.9.15-eclipse-temurin-25 AS build
+FROM eclipse-temurin:25-jdk AS build
+WORKDIR /workspace
 
-WORKDIR /app
+# Copia o wrapper e o POM primeiro para aproveitar cache de dependências
+COPY mvnw .
 COPY pom.xml .
-COPY src ./src
+COPY .mvn .mvn
+RUN chmod +x mvnw
+RUN ./mvnw -B -ntp dependency:go-offline
 
-RUN mvn -B -DskipTests package
+# Copia o código-fonte e faz o build do artefato
+COPY src ./src
+RUN ./mvnw -B -ntp package -DskipTests
 
 FROM eclipse-temurin:25-jre
-
 WORKDIR /app
-COPY --from=build /app/target/ExerciseWorksheetManager-0.0.1-SNAPSHOT.jar app.jar
+
+COPY --from=build /workspace/target/ExerciseWorksheetManager-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8080}"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
