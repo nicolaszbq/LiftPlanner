@@ -61,14 +61,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
 
                         //permitindo todas requisições ao gemini (apenas para testar)
-                        .requestMatchers("/geminiapi/**").permitAll()
 
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
 
                         // Fotos (upload de foto é chamado após registro)
                         .requestMatchers(HttpMethod.POST, "/users/uploadPhoto/**").permitAll()
+                        
+                        .requestMatchers(HttpMethod.GET, "/users/uploadPhoto/**").permitAll()
                         // Regras de role
                         .requestMatchers(HttpMethod.POST, "/worksheets/update/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.GET, "/worksheets/**").permitAll()
@@ -87,7 +89,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("http://localhost:*"));
+        config.setAllowedOriginPatterns(List.of("http://localhost:*","https://*.onrender.com"));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization","Content-Type"));
         config.setExposedHeaders(List.of("Authorization"));
