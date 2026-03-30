@@ -8,11 +8,18 @@ O **LiftPlanner** é uma aplicação focada em planejamento de treinos de muscul
 
 ## 🚀 Funcionalidades
 
-* 📅 Criação de planos de treino personalizados
-* 💪 Organização de exercícios por grupo muscular
+* 📅 Criação de planos de treino personalizados:
+  ![WhatsApp Image 2026-03-28 at 11 35 37](https://github.com/user-attachments/assets/2511d5fb-2573-4eb5-90ff-b9980327ff79)
+  
+* 📅 Editar e excluir fichas ja criadas:
+  ![WhatsApp Image 2026-03-28 at 11 35 50](https://github.com/user-attachments/assets/6866519e-ff05-4caf-83ff-71e6bcbd6bae)
+
+* 💪 Organização de exercícios por grupo muscular:
+  ![WhatsApp Image 2026-03-28 at 11 33 57](https://github.com/user-attachments/assets/0f31efda-f426-4092-af1c-17f4b708c86c)
 * 🔁 Estruturação de rotinas (ex: ABC, Full Body, etc.)
 * 📊 Acompanhamento de progresso (cargas, repetições, etc.)
 * 🧠 Interface simples e intuitiva
+
 
 ---
 
@@ -33,39 +40,8 @@ O **LiftPlanner** é uma aplicação focada em planejamento de treinos de muscul
 
 <!-- ![Preview](./assets/preview.png) -->
 
----
+![WhatsApp Image 2026-03-28 at 11 33 16](https://github.com/user-attachments/assets/612677e2-fe96-466d-8a18-50cc846942e7)
 
-## ⚙️ Como rodar o projeto
-
-```bash
-# Clone o repositório
-git clone https://github.com/nicolaszbq/LiftPlanner.git
-
-# Entre na pasta
-cd LiftPlanner
-
-# Instale as dependências
-npm install
-
-# Rode o projeto
-npm run dev
-```
-
----
-
-## 📂 Estrutura do projeto
-
-```bash
-LiftPlanner/
-├── src/
-│   ├── components/
-│   ├── pages/ ou app/
-│   ├── services/
-│   └── styles/
-├── public/
-├── package.json
-└── README.md
-```
 
 ---
 
