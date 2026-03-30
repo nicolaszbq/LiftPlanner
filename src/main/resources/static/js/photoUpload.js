@@ -9,7 +9,7 @@ form.addEventListener("submit", async (e) => {
     // FormData encapsula o arquivo automaticamente
     const formData = new FormData();
     formData.append("file", fileInput.files[0]);
-    const response = await fetch(`http://localhost:8080/users/uploadPhoto/${userId}`, {
+    const response = await fetch(`/users/uploadPhoto/${userId}`, {
         method: "POST",
         body: formData
         // ← NÃO coloca Content-Type aqui. O browser faz isso sozinho.
