@@ -1,6 +1,6 @@
     if (!localStorage.getItem("token")) {
         window.location.href = "index.html";
-    }else if(!localStorage.getItem("user") && localStorage.getItem("user").role === "MEMBER"){
+    }else if(!localStorage.getItem("user") || localStorage.getItem("user").role === "MEMBER"){
         window.location.href = "index.html";
     }
 

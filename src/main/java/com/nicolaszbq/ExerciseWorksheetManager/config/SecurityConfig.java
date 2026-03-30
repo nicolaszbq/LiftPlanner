@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // Recursos estáticos públicos
-                        .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/uploads/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
                         // Auth pública
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                         .requestMatchers("/error").permitAll()
@@ -73,8 +73,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         // Regras de role
-                        .requestMatchers(HttpMethod.GET, "/dashboard/**").hasRole("TRAINER")
-                        .requestMatchers(HttpMethod.GET, "/userArea/**").hasRole("MEMBER")
+                        .requestMatchers(HttpMethod.GET, "/dashboard.html").hasRole("TRAINER")
+                        .requestMatchers(HttpMethod.GET, "/userArea.html").hasRole("MEMBER")
 
                         .requestMatchers(HttpMethod.POST, "/worksheets/update/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.GET, "/worksheets/**").permitAll()
