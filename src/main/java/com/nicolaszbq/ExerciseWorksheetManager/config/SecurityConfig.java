@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // Static public stuff
-                        .requestMatchers("/", "/index.html","/*/login.html","/*/register.html",  "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
+                        .requestMatchers("/", "/index.html","/auth/login.html","/auth/register.html",  "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
                         // Public stuff
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                         .requestMatchers("/error").permitAll()
@@ -72,12 +72,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         // Roles:
-
-                        .requestMatchers(HttpMethod.POST, "/dashboard.html").hasRole("TRAINER")
-                        .requestMatchers(HttpMethod.GET, "/dashboard.html").hasRole("TRAINER")
-
-                        .requestMatchers(HttpMethod.POST, "/userArea.html").hasRole("MEMBER")
-                        .requestMatchers(HttpMethod.GET, "/userArea.html").hasRole("MEMBER")
 
                         .requestMatchers(HttpMethod.POST, "/worksheets/update/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.GET, "/worksheets/**").permitAll()
