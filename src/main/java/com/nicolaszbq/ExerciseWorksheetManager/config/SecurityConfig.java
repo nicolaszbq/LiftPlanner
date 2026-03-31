@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // Recursos estáticos públicos
-                        .requestMatchers("/", "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
+                        .requestMatchers("/", "/index.html","/login.html","/register.html",  "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
                         // Auth pública
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                         .requestMatchers("/error").permitAll()
