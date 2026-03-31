@@ -55,25 +55,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Recursos estáticos públicos
-                        .requestMatchers("/", "/index.html","*/login.html","*/register.html",  "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
-                        // Auth pública
+                        // Static public stuff
+                        .requestMatchers("/", "/index.html","/*/login.html","/*/register.html",  "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
+                        // Public stuff
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                         .requestMatchers("/error").permitAll()
-                        //permitindo todas requisições ao gemini (apenas para testar)
 
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
 
-                        // Fotos (upload de foto é chamado após registro)
+                        //Pictures:
                         .requestMatchers(HttpMethod.POST, "/users/uploadPhoto/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/uploadPhoto/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
-                        // Regras de role
+                        // Roles:
 
                         .requestMatchers(HttpMethod.POST, "/dashboard.html").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.GET, "/dashboard.html").hasRole("TRAINER")
@@ -86,7 +84,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/worksheets/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.PUT, "/worksheets/**").hasRole("TRAINER")
                         .requestMatchers(HttpMethod.POST, "/worksheets/**").hasRole("TRAINER")
-                        // O resto exige autenticação
+                        // now, the rest needs auth
                         .anyRequest().authenticated()
 
                 )
