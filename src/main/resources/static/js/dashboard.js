@@ -133,7 +133,7 @@
         console.log("USER RECEBIDO:", user);
         console.log(user);
         
-        img.src = user.photoUrl ? user.photoUrl : "caminho/para/avatar_padrao.svg";
+        img.src = user.photoUrl ? user.photoUrl : "../images/defaultpfp.svg";
         document.getElementById("userName").textContent = user.username;
         document.getElementById("userEmail").textContent = user.email;
 }
