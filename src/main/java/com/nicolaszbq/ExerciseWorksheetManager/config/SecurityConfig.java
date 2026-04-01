@@ -56,10 +56,24 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // Static public stuff
-                        .requestMatchers("/", "/index.html","/auth/login.html","/auth/register.html",  "/css/**", "/js/**", "/uploads/**", "/images/**", "/caminho/**").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/auth/login.html",
+                                "/flavicon.ico",
+                                "/auth/register.html",
+                                "/dashboard.html",
+                                "/userArea.html",
+                                "/css/**",
+                                "/js/**",
+                                "/uploads/**",
+                                "/images/**",
+                                "/caminho/**"
+                        ).permitAll()
                         // Public stuff
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/error/**").permitAll()
 
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()

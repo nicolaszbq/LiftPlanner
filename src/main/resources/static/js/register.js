@@ -1,4 +1,7 @@
 const form = document.getElementById("registerForm");
+if(localStorage.getItem("token") || localStorage.getItem("user")){
+    window.location.href = "index.html"
+}
 let pendingUserId;
 form.addEventListener("submit", async (e) =>{
     //impede que o usuario tente dar refresh na pagina

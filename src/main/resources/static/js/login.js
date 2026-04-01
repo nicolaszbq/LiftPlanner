@@ -1,5 +1,9 @@
 const form = document.getElementById("loginForm");
 
+if(localStorage.getItem("token") || localStorage.getItem("user")){
+    window.location.href = "index.html"
+}
+
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
